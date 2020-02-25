@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import * as React from 'react';
-import { Input } from 'antd';
+import { Input, Popover, Tooltip, Icon, Dropdown, Menu, Button } from 'antd';
 import { Location, History as RouterHistory } from 'history';
 import _clamp from 'lodash/clamp';
 import _get from 'lodash/get';
@@ -55,6 +55,13 @@ import { TraceArchive } from '../../types/archive';
 import { EmbeddedState } from '../../types/embedded';
 import filterSpans from '../../utils/filter-spans';
 import updateUiFind from '../../utils/update-ui-find';
+import UIElementsContext, {
+  ButtonProps,
+  DropdownProps,
+  MenuProps,
+  PopoverProps,
+  TooltipProps,
+} from './uiElementsContext';
 
 import './index.css';
 import TTraceTimeline from '../../types/TTraceTimeline';
@@ -440,20 +447,32 @@ export class TracePageImpl extends React.PureComponent<TProps, TState> {
             </section>
           ) : (
             <section style={{ paddingTop: headerHeight }}>
-              <TraceTimelineViewer
-                registerAccessors={this._scrollManager.setAccessors}
-                scrollToFirstVisibleSpan={this._scrollManager.scrollToFirstVisibleSpan}
-                findMatchesIDs={spanFindMatches}
-                trace={data}
-                updateNextViewRangeTime={this.updateNextViewRangeTime}
-                updateViewRangeTime={this.updateViewRangeTime}
-                viewRange={viewRange}
-                focusSpan={this.focusSpan}
-                uiFind={uiFind}
-                traceTimeline={traceTimeline}
-                createLinkToExternalSpan={createLinkToExternalSpan}
-                {...rest}
-              />
+              <UIElementsContext.Provider
+                value={{
+                  Popover: Popover as React.ComponentType<PopoverProps>,
+                  Tooltip: Tooltip as React.ComponentType<TooltipProps>,
+                  Icon,
+                  Dropdown: Dropdown as React.ComponentType<DropdownProps>,
+                  Menu: Menu as React.ComponentType<MenuProps>,
+                  MenuItem: Menu.Item,
+                  Button: Button as React.ComponentType<ButtonProps>,
+                }}
+              >
+                <TraceTimelineViewer
+                  registerAccessors={this._scrollManager.setAccessors}
+                  scrollToFirstVisibleSpan={this._scrollManager.scrollToFirstVisibleSpan}
+                  findMatchesIDs={spanFindMatches}
+                  trace={data}
+                  updateNextViewRangeTime={this.updateNextViewRangeTime}
+                  updateViewRangeTime={this.updateViewRangeTime}
+                  viewRange={viewRange}
+                  focusSpan={this.focusSpan}
+                  uiFind={uiFind}
+                  traceTimeline={traceTimeline}
+                  createLinkToExternalSpan={createLinkToExternalSpan}
+                  {...rest}
+                />
+              </UIElementsContext.Provider>
             </section>
           ))}
       </div>
