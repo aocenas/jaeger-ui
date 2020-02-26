@@ -19,17 +19,12 @@ jest.mock('./conv-raven-to-ga', () => () => ({
   message: 'jaeger/a',
 }));
 
-jest.mock('./index', () => {
-  process.env.REACT_APP_VSN_STATE = '{}';
-  return require.requireActual('./index');
-});
-
 import ReactGA from 'react-ga';
 
 import * as tracking from './index';
 
 let longStr = '---';
-function getStr(len: number) {
+function getStr(len) {
   while (longStr.length < len) {
     longStr += longStr.slice(0, len - longStr.length);
   }

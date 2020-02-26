@@ -50,9 +50,13 @@ export function ThemeConsumer(props: ThemeConsumerProps) {
   );
 }
 
+type WrappedWithThemeComponent<Props> = React.ComponentType<Omit<Props, 'theme'>> & {
+  wrapped: React.ComponentType<Props>;
+};
+
 export const withTheme = <Props extends { theme: Theme }, Statics extends {} = {}>(
   Component: React.ComponentType<Props>
-) => {
+): WrappedWithThemeComponent<Props> => {
   let WithTheme: React.ComponentType<Omit<Props, 'theme'>> = props => {
     return (
       <ThemeConsumer>
@@ -70,7 +74,8 @@ export const withTheme = <Props extends { theme: Theme }, Statics extends {} = {
 
   WithTheme.displayName = `WithTheme(${Component.displayName})`;
   WithTheme = hoistNonReactStatics<Omit<Props, 'theme'>, Props>(WithTheme, Component);
-  return WithTheme;
+  (WithTheme as WrappedWithThemeComponent<Props>).wrapped = Component;
+  return WithTheme as WrappedWithThemeComponent<Props>;
 };
 
 export const createStyle = <Fn extends (this: any, ...newArgs: any[]) => ReturnType<Fn>>(fn: Fn) => {

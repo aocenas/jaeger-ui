@@ -15,7 +15,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import TraceTimelineViewer, { TraceTimelineViewerImpl } from './index';
+import TraceTimelineViewer from './index';
 import traceGenerator from '../../../demo/trace-generators';
 import transformTraceData from '../../../model/transform-trace-data';
 import TimelineHeaderRow from './TimelineHeaderRow';
@@ -31,12 +31,20 @@ describe('<TraceTimelineViewer>', () => {
         current: [0, 1],
       },
     },
-    spanNameColumnWidth: 0.5,
+    traceTimeline: {
+      spanNameColumnWidth: 0.5,
+    },
     expandAll: jest.fn(),
     collapseAll: jest.fn(),
     expandOne: jest.fn(),
     collapseOne: jest.fn(),
     theme: defaultTheme,
+    history: {
+      replace: () => {},
+    },
+    location: {
+      search: null,
+    },
   };
   const options = {
     context: {
@@ -51,16 +59,13 @@ describe('<TraceTimelineViewer>', () => {
   };
 
   let wrapper;
-  let connectedWrapper;
 
   beforeEach(() => {
-    wrapper = shallow(<TraceTimelineViewerImpl {...props} />, options);
-    connectedWrapper = shallow(<TraceTimelineViewer {...props} />, options);
+    wrapper = shallow(<TraceTimelineViewer.wrapped {...props} />, options);
   });
 
   it('it does not explode', () => {
     expect(wrapper).toBeDefined();
-    expect(connectedWrapper).toBeDefined();
   });
 
   it('it sets up actions', () => {
