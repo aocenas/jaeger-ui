@@ -13,8 +13,19 @@
 // limitations under the License.
 
 import * as React from 'react';
+import { css } from 'emotion';
+import cx from 'classnames';
+import { createStyle } from '../Theme';
 
-import './TimelineRow.css';
+const getStyles = createStyle(() => {
+  return {
+    flexRow: css`
+      display: flex;
+      flex: 0 1 auto;
+      flex-direction: row;
+    `,
+  };
+});
 
 type TTimelineRowProps = {
   children: React.ReactNode;
@@ -30,8 +41,9 @@ interface ITimelineRowCellProps extends React.HTMLAttributes<HTMLDivElement> {
 
 export default function TimelineRow(props: TTimelineRowProps) {
   const { children, className = '', ...rest } = props;
+  const styles = getStyles();
   return (
-    <div className={`flex-row ${className}`} {...rest}>
+    <div className={cx(styles.flexRow, className)} {...rest}>
       {children}
     </div>
   );

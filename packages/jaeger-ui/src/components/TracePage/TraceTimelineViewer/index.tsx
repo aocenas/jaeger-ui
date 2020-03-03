@@ -24,15 +24,40 @@ import { TNil } from '../../../types';
 import { Span, Trace, Log } from '../../../types/trace';
 import TTraceTimeline from '../../../types/TTraceTimeline';
 import { TExtractUiFindFromStateReturn } from '../../common/UiFindInput';
-import { createStyle, Theme, withTheme } from '../Theme';
+import { createStyle } from '../Theme';
 import ExternalLinkContext from '../url/externalLinkContext';
 
-import './index.css';
-
-const getStyles = createStyle(theme => {
+const getStyles = createStyle(() => {
   return {
     TraceTimelineViewer: css`
-      border-bottom: ${theme.borderStyle};
+      border-bottom: 1px solid #bbb;
+
+      & .json-markup {
+        line-height: 17px;
+        font-size: 13px;
+        font-family: monospace;
+        white-space: pre-wrap;
+      }
+
+      & .json-markup-key {
+        font-weight: bold;
+      }
+
+      & .json-markup-bool {
+        color: firebrick;
+      }
+
+      & .json-markup-string {
+        color: teal;
+      }
+
+      & .json-markup-null {
+        color: teal;
+      }
+
+      & .json-markup-number {
+        color: blue;
+      }
     `,
   };
 });
@@ -67,7 +92,6 @@ type TProps = TExtractUiFindFromStateReturn & {
   setTrace: (trace: Trace | TNil, uiFind: string | TNil) => void;
   addHoverIndentGuideId: (spanID: string) => void;
   removeHoverIndentGuideId: (spanID: string) => void;
-  theme: Theme;
 };
 
 const NUM_TICKS = 5;
@@ -78,7 +102,7 @@ const NUM_TICKS = 5;
  * re-render the ListView every time the cursor is moved on the trace minimap
  * or `TimelineHeaderRow`.
  */
-export class TraceTimelineViewerUnthemed extends React.PureComponent<TProps> {
+export default class TraceTimelineViewer extends React.PureComponent<TProps> {
   componentDidMount() {
     mergeShortcuts({
       collapseAll: this.collapseAll,
@@ -112,11 +136,10 @@ export class TraceTimelineViewerUnthemed extends React.PureComponent<TProps> {
       viewRange,
       createLinkToExternalSpan,
       traceTimeline,
-      theme,
       ...rest
     } = this.props;
     const { trace } = rest;
-    const styles = getStyles(theme);
+    const styles = getStyles();
 
     return (
       <ExternalLinkContext.Provider value={createLinkToExternalSpan}>
@@ -145,5 +168,3 @@ export class TraceTimelineViewerUnthemed extends React.PureComponent<TProps> {
     );
   }
 }
-
-export default withTheme(TraceTimelineViewerUnthemed);

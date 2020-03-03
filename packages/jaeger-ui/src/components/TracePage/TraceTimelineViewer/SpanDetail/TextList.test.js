@@ -27,7 +27,7 @@ describe('<TextList>', () => {
 
   it('renders without exploding', () => {
     expect(wrapper).toBeDefined();
-    expect(wrapper.find('.TextList').length).toBe(1);
+    expect(wrapper.find('[data-test-id="TextList"]').length).toBe(1);
   });
 
   it('renders a table row for each data element', () => {

@@ -13,16 +13,65 @@
 // limitations under the License.
 
 import * as React from 'react';
-import cx from 'classnames';
 import IoIosArrowDown from 'react-icons/lib/io/ios-arrow-down';
 import IoIosArrowRight from 'react-icons/lib/io/ios-arrow-right';
+import { css } from 'emotion';
+import cx from 'classnames';
 
 import * as markers from './AccordianKeyValues.markers';
 import KeyValuesTable from './KeyValuesTable';
 import { TNil } from '../../../../types';
 import { KeyValuePair, Link } from '../../../../types/trace';
+import { createStyle } from '../../Theme';
 
-import './AccordianKeyValues.css';
+export const getStyles = createStyle(() => {
+  return {
+    header: css`
+      cursor: pointer;
+      overflow: hidden;
+      padding: 0.25em 0.1em;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      &:hover {
+        background: #e8e8e8;
+      }
+    `,
+    headerEmpty: css`
+      background: none;
+      cursor: initial;
+    `,
+    headerHighContrast: css`
+      &:hover {
+        background: #ddd;
+      }
+    `,
+    emptyIcon: css`
+      color: #aaa;
+    `,
+    summary: css`
+      display: inline;
+      list-style: none;
+      padding: 0;
+    `,
+    summaryItem: css`
+      display: inline;
+      margin-left: 0.7em;
+      padding-right: 0.5rem;
+      border-right: 1px solid #ddd;
+      &:last-child {
+        padding-right: 0;
+        border-right: none;
+      }
+    `,
+    summaryLabel: css`
+      color: #777;
+    `,
+    summaryDelim: css`
+      color: #bbb;
+      padding: 0 0.2em;
+    `,
+  };
+});
 
 type AccordianKeyValuesProps = {
   className?: string | TNil;
@@ -41,14 +90,15 @@ export function KeyValuesSummary(props: { data?: KeyValuePair[] }) {
   if (!Array.isArray(data) || !data.length) {
     return null;
   }
+  const styles = getStyles();
   return (
-    <ul className="AccordianKeyValues--summary">
+    <ul className={styles.summary}>
       {data.map((item, i) => (
         // `i` is necessary in the key because item.key can repeat
         // eslint-disable-next-line react/no-array-index-key
-        <li className="AccordianKeyValues--summaryItem" key={`${item.key}-${i}`}>
-          <span className="AccordianKeyValues--summaryLabel">{item.key}</span>
-          <span className="AccordianKeyValues--summaryDelim">=</span>
+        <li className={styles.summaryItem} key={`${item.key}-${i}`}>
+          <span className={styles.summaryLabel}>{item.key}</span>
+          <span className={styles.summaryDelim}>=</span>
           {String(item.value)}
         </li>
       ))}
@@ -63,7 +113,8 @@ KeyValuesSummary.defaultProps = {
 export default function AccordianKeyValues(props: AccordianKeyValuesProps) {
   const { className, data, highContrast, interactive, isOpen, label, linksGetter, onToggle } = props;
   const isEmpty = !Array.isArray(data) || !data.length;
-  const iconCls = cx('u-align-icon', { 'AccordianKeyValues--emptyIcon': isEmpty });
+  const styles = getStyles();
+  const iconCls = cx('u-align-icon', { [styles.emptyIcon]: isEmpty });
   let arrow: React.ReactNode | null = null;
   let headerProps: Object | null = null;
   if (interactive) {
@@ -78,11 +129,12 @@ export default function AccordianKeyValues(props: AccordianKeyValuesProps) {
   return (
     <div className={cx(className, 'u-tx-ellipsis')}>
       <div
-        className={cx('AccordianKeyValues--header', {
-          'is-empty': isEmpty,
-          'is-high-contrast': highContrast,
+        className={cx(styles.header, {
+          [styles.headerEmpty]: isEmpty,
+          [styles.headerHighContrast]: highContrast && !isEmpty,
         })}
         {...headerProps}
+        data-test-id="AccordianKeyValues--header"
       >
         {arrow}
         <strong data-test={markers.LABEL}>

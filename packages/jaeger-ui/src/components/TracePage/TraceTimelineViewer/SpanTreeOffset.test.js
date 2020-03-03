@@ -17,7 +17,7 @@ import React from 'react';
 import IoChevronRight from 'react-icons/lib/io/chevron-right';
 import IoIosArrowDown from 'react-icons/lib/io/ios-arrow-down';
 
-import SpanTreeOffset from './SpanTreeOffset';
+import SpanTreeOffset, { getStyles } from './SpanTreeOffset';
 import spanAncestorIdsSpy from '../../../utils/span-ancestor-ids';
 
 jest.mock('../../../utils/span-ancestor-ids');
@@ -49,13 +49,13 @@ describe('SpanTreeOffset', () => {
     it('renders only one .SpanTreeOffset--indentGuide for entire trace if span has no ancestors', () => {
       spanAncestorIdsSpy.mockReturnValue([]);
       wrapper = shallow(<SpanTreeOffset {...props} />);
-      const indentGuides = wrapper.find('.SpanTreeOffset--indentGuide');
+      const indentGuides = wrapper.find('[data-test-id="SpanTreeOffset--indentGuide"]');
       expect(indentGuides.length).toBe(1);
       expect(indentGuides.prop('data-ancestor-id')).toBe(specialRootID);
     });
 
     it('renders one .SpanTreeOffset--indentGuide per ancestor span, plus one for entire trace', () => {
-      const indentGuides = wrapper.find('.SpanTreeOffset--indentGuide');
+      const indentGuides = wrapper.find('[data-test-id="SpanTreeOffset--indentGuide"]');
       expect(indentGuides.length).toBe(3);
       expect(indentGuides.at(0).prop('data-ancestor-id')).toBe(specialRootID);
       expect(indentGuides.at(1).prop('data-ancestor-id')).toBe(rootSpanID);
@@ -65,7 +65,8 @@ describe('SpanTreeOffset', () => {
     it('adds .is-active to correct indentGuide', () => {
       props.hoverIndentGuideIds = new Set([parentSpanID]);
       wrapper = shallow(<SpanTreeOffset {...props} />);
-      const activeIndentGuide = wrapper.find('.is-active');
+      const styles = getStyles();
+      const activeIndentGuide = wrapper.find(`.${styles.indentGuideActive}`);
       expect(activeIndentGuide.length).toBe(1);
       expect(activeIndentGuide.prop('data-ancestor-id')).toBe(parentSpanID);
     });
@@ -130,13 +131,13 @@ describe('SpanTreeOffset', () => {
     });
 
     it('calls props.addHoverIndentGuideId on mouse enter', () => {
-      wrapper.find('.SpanTreeOffset--iconWrapper').simulate('mouseenter', {});
+      wrapper.find('[data-test-id="icon-wrapper"]').simulate('mouseenter', {});
       expect(props.addHoverIndentGuideId).toHaveBeenCalledTimes(1);
       expect(props.addHoverIndentGuideId).toHaveBeenCalledWith(ownSpanID);
     });
 
     it('calls props.removeHoverIndentGuideId on mouse leave', () => {
-      wrapper.find('.SpanTreeOffset--iconWrapper').simulate('mouseleave', {});
+      wrapper.find('[data-test-id="icon-wrapper"]').simulate('mouseleave', {});
       expect(props.removeHoverIndentGuideId).toHaveBeenCalledTimes(1);
       expect(props.removeHoverIndentGuideId).toHaveBeenCalledWith(ownSpanID);
     });

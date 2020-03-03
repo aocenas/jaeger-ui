@@ -15,7 +15,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import ReferencesButton from './ReferencesButton';
+import ReferencesButton, { getStyles } from './ReferencesButton';
 import transformTraceData from '../../../model/transform-trace-data';
 import traceGenerator from '../../../demo/trace-generators';
 import ReferenceLink from '../url/ReferenceLink';
@@ -52,11 +52,12 @@ describe(ReferencesButton, () => {
     const dropdown = wrapper.find(UIDropdown);
     const refLink = wrapper.find(ReferenceLink);
     const tooltip = wrapper.find(UITooltip);
+    const styles = getStyles();
 
     expect(dropdown.length).toBe(0);
     expect(refLink.length).toBe(1);
     expect(refLink.prop('reference')).toBe(oneReference[0]);
-    expect(refLink.first().props().className).toBe('ReferencesButton-MultiParent');
+    expect(refLink.first().props().className).toBe(styles.MultiParent);
     expect(tooltip.length).toBe(1);
     expect(tooltip.prop('title')).toBe(props.tooltipText);
   });

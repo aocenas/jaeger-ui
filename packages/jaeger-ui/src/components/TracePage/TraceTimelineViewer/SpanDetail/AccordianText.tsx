@@ -13,13 +13,29 @@
 // limitations under the License.
 
 import * as React from 'react';
+import { css } from 'emotion';
 import cx from 'classnames';
 import IoIosArrowDown from 'react-icons/lib/io/ios-arrow-down';
 import IoIosArrowRight from 'react-icons/lib/io/ios-arrow-right';
 import TextList from './TextList';
 import { TNil } from '../../../../types';
+import { getStyles as getAccordianKeyValuesStyles } from './AccordianKeyValues';
+import { createStyle } from '../../Theme';
 
-import './AccordianText.css';
+const getStyles = createStyle(() => {
+  return {
+    header: css`
+      cursor: pointer;
+      overflow: hidden;
+      padding: 0.25em 0.1em;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      &:hover {
+        background: #e8e8e8;
+      }
+    `,
+  };
+});
 
 type AccordianTextProps = {
   className?: string | TNil;
@@ -35,7 +51,8 @@ type AccordianTextProps = {
 export default function AccordianText(props: AccordianTextProps) {
   const { className, data, headerClassName, highContrast, interactive, isOpen, label, onToggle } = props;
   const isEmpty = !Array.isArray(data) || !data.length;
-  const iconCls = cx('u-align-icon', { 'AccordianKeyValues--emptyIcon': isEmpty });
+  const accordianKeyValuesStyles = getAccordianKeyValuesStyles();
+  const iconCls = cx('u-align-icon', { [accordianKeyValuesStyles.emptyIcon]: isEmpty });
   let arrow: React.ReactNode | null = null;
   let headerProps: Object | null = null;
   if (interactive) {
@@ -46,15 +63,13 @@ export default function AccordianText(props: AccordianTextProps) {
       role: 'switch',
     };
   }
+  const styles = getStyles();
   return (
     <div className={className || ''}>
       <div
-        className={cx('AccordianText--header', headerClassName, {
-          'is-empty': isEmpty,
-          'is-high-contrast': highContrast,
-          'is-open': isOpen,
-        })}
+        className={cx(styles.header, headerClassName)}
         {...headerProps}
+        data-test-id="AccordianText--header"
       >
         {arrow} <strong>{label}</strong> ({data.length})
       </div>

@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import * as React from 'react';
+import { css } from 'emotion';
 
 import TimelineCollapser from './TimelineCollapser';
 import TimelineColumnResizer from './TimelineColumnResizer';
@@ -20,8 +21,28 @@ import TimelineViewingLayer from './TimelineViewingLayer';
 import Ticks from '../Ticks';
 import TimelineRow from '../TimelineRow';
 import { TUpdateViewRangeTimeFunction, IViewRangeTime, ViewRangeTimeUpdate } from '../../types';
+import { createStyle } from '../../Theme';
 
-import './TimelineHeaderRow.css';
+const getStyles = createStyle(() => {
+  return {
+    TimelineHeaderRow: css`
+      background: #ececec;
+      border-bottom: 1px solid #ccc;
+      height: 38px;
+      line-height: 38px;
+      position: fixed;
+      width: 100%;
+      z-index: 4;
+    `,
+    title: css`
+      flex: 1;
+      overflow: hidden;
+      margin: 0;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    `,
+  };
+});
 
 type TimelineHeaderRowProps = {
   duration: number;
@@ -52,10 +73,11 @@ export default function TimelineHeaderRow(props: TimelineHeaderRowProps) {
     viewRangeTime,
   } = props;
   const [viewStart, viewEnd] = viewRangeTime.current;
+  const styles = getStyles();
   return (
-    <TimelineRow className="TimelineHeaderRow">
+    <TimelineRow className={styles.TimelineHeaderRow} data-test-id="TimelineHeaderRow">
       <TimelineRow.Cell className="ub-flex ub-px2" width={nameColumnWidth}>
-        <h3 className="TimelineHeaderRow--title">Service &amp; Operation</h3>
+        <h3 className={styles.TimelineHeaderRow}>Service &amp; Operation</h3>
         <TimelineCollapser
           onCollapseAll={onCollapseAll}
           onExpandAll={onExpandAll}

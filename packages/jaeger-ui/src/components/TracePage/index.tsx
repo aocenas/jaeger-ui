@@ -429,13 +429,7 @@ export class TracePageImpl extends React.PureComponent<TProps, TState> {
     };
 
     return (
-      <ThemeProvider
-        value={
-          {
-            borderStyle: '5px dashed #bbb',
-          } as ThemeOptions
-        }
-      >
+      <ThemeProvider value={{} as ThemeOptions}>
         <div>
           {archiveEnabled && (
             <ArchiveNotifier acknowledge={this.acknowledgeArchive} archivedState={archiveTraceState} />

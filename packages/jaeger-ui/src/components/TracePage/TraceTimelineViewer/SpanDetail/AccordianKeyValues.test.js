@@ -78,7 +78,7 @@ describe('<AccordianKeyValues>', () => {
   });
 
   it('renders the summary instead of the table when it is not expanded', () => {
-    const summary = wrapper.find('.AccordianKeyValues--header').find(KeyValuesSummary);
+    const summary = wrapper.find('[data-test-id="AccordianKeyValues--header"]').find(KeyValuesSummary);
     expect(summary.length).toBe(1);
     expect(summary.prop('data')).toBe(tags);
     expect(wrapper.find(KeyValuesTable).length).toBe(0);

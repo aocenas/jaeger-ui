@@ -73,8 +73,8 @@ describe('<SpanBar>', () => {
       </UIElementsContext.Provider>
     );
     expect(wrapper).toBeDefined();
-    const { onMouseOver, onMouseOut } = wrapper.find('.SpanBar--wrapper').props();
-    const labelElm = wrapper.find('.SpanBar--label');
+    const { onMouseOver, onMouseOut } = wrapper.find('[data-test-id="SpanBar--wrapper"]').props();
+    const labelElm = wrapper.find('[data-test-id="SpanBar--label"]');
     expect(labelElm.text()).toBe(shortLabel);
     onMouseOver();
     expect(labelElm.text()).toBe(longLabel);

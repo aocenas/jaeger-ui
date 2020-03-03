@@ -13,15 +13,61 @@
 // limitations under the License.
 
 import React from 'react';
-import cx from 'classnames';
 import _get from 'lodash/get';
 import IoChevronRight from 'react-icons/lib/io/chevron-right';
 import IoIosArrowDown from 'react-icons/lib/io/ios-arrow-down';
+import { css } from 'emotion';
+import cx from 'classnames';
 
 import { Span } from '../../../types/trace';
 import spanAncestorIds from '../../../utils/span-ancestor-ids';
 
-import './SpanTreeOffset.css';
+import { createStyle } from '../Theme';
+
+export const getStyles = createStyle(() => {
+  return {
+    SpanTreeOffset: css`
+      label: SpanTreeOffset;
+      color: #000;
+      position: relative;
+    `,
+    SpanTreeOffsetParent: css`
+      label: SpanTreeOffsetParent;
+      &:hover {
+        background-color: #e8e8e8;
+        cursor: pointer;
+      }
+    `,
+    indentGuide: css`
+      label: indentGuide;
+      /* The size of the indentGuide is based off of the iconWrapper */
+      padding-right: calc(0.5rem + 12px);
+      height: 100%;
+      border-left: 1px solid transparent;
+      display: inline-flex;
+      &::before {
+        content: '';
+        padding-left: 1px;
+        background-color: lightgrey;
+      }
+    `,
+    indentGuideActive: css`
+      label: indentGuideActive;
+      padding-right: calc(0.5rem + 11px);
+      border-left: 0px;
+      &::before {
+        content: '';
+        padding-left: 3px;
+        background-color: darkgrey;
+      }
+    `,
+    iconWrapper: css`
+      label: iconWrapper;
+      position: absolute;
+      right: 0.25rem;
+    `,
+  };
+});
 
 type TProps = {
   childrenVisible?: boolean;
@@ -94,24 +140,30 @@ export default class SpanTreeOffset extends React.PureComponent<TProps> {
     const wrapperProps = hasChildren ? { onClick, role: 'switch', 'aria-checked': childrenVisible } : null;
     const icon =
       showChildrenIcon && hasChildren && (childrenVisible ? <IoIosArrowDown /> : <IoChevronRight />);
+    const styles = getStyles();
     return (
-      <span className={`SpanTreeOffset ${hasChildren ? 'is-parent' : ''}`} {...wrapperProps}>
+      <span
+        className={cx(styles.SpanTreeOffset, { [styles.SpanTreeOffsetParent]: hasChildren })}
+        {...wrapperProps}
+      >
         {this.ancestorIds.map(ancestorId => (
           <span
             key={ancestorId}
-            className={cx('SpanTreeOffset--indentGuide', {
-              'is-active': this.props.hoverIndentGuideIds.has(ancestorId),
+            className={cx(styles.indentGuide, {
+              [styles.indentGuideActive]: this.props.hoverIndentGuideIds.has(ancestorId),
             })}
             data-ancestor-id={ancestorId}
+            data-test-id="SpanTreeOffset--indentGuide"
             onMouseEnter={event => this.handleMouseEnter(event, ancestorId)}
             onMouseLeave={event => this.handleMouseLeave(event, ancestorId)}
           />
         ))}
         {icon && (
           <span
-            className="SpanTreeOffset--iconWrapper"
+            className={styles.iconWrapper}
             onMouseEnter={event => this.handleMouseEnter(event, spanID)}
             onMouseLeave={event => this.handleMouseLeave(event, spanID)}
+            data-test-id="icon-wrapper"
           >
             {icon}
           </span>

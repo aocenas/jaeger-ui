@@ -17,13 +17,40 @@ import cx from 'classnames';
 import _sortBy from 'lodash/sortBy';
 import IoIosArrowDown from 'react-icons/lib/io/ios-arrow-down';
 import IoIosArrowRight from 'react-icons/lib/io/ios-arrow-right';
+import { css } from 'emotion';
 
 import AccordianKeyValues from './AccordianKeyValues';
 import { formatDuration } from '../utils';
 import { TNil } from '../../../../types';
 import { Log, KeyValuePair, Link } from '../../../../types/trace';
+import { createStyle } from '../../Theme';
 
-import './AccordianLogs.css';
+const getStyles = createStyle(() => {
+  return {
+    AccordianLogs: css`
+      border: 1px solid #d8d8d8;
+      position: relative;
+      margin-bottom: 0.25rem;
+    `,
+    header: css`
+      background: #e4e4e4;
+      color: inherit;
+      display: block;
+      padding: 0.25rem 0.5rem;
+      &:hover {
+        background: #dadada;
+      }
+    `,
+    content: css`
+      background: #f0f0f0;
+      border-top: 1px solid #d8d8d8;
+      padding: 0.5rem 0.5rem 0.25rem 0.5rem;
+    `,
+    footer: css`
+      color: #999;
+    `,
+  };
+});
 
 type AccordianLogsProps = {
   interactive?: boolean;
@@ -55,13 +82,14 @@ export default function AccordianLogs(props: AccordianLogsProps) {
     };
   }
 
+  const styles = getStyles();
   return (
-    <div className="AccordianLogs">
-      <HeaderComponent className={cx('AccordianLogs--header', { 'is-open': isOpen })} {...headerProps}>
+    <div className={styles.AccordianLogs}>
+      <HeaderComponent className={styles.header} {...headerProps}>
         {arrow} <strong>Logs</strong> ({logs.length})
       </HeaderComponent>
       {isOpen && (
-        <div className="AccordianLogs--content">
+        <div className={styles.content}>
           {_sortBy(logs, 'timestamp').map((log, i) => (
             <AccordianKeyValues
               // `i` is necessary in the key because timestamps can repeat
@@ -77,7 +105,7 @@ export default function AccordianLogs(props: AccordianLogsProps) {
               onToggle={interactive && onItemToggle ? () => onItemToggle(log) : null}
             />
           ))}
-          <small className="AccordianLogs--footer">
+          <small className={styles.footer}>
             Log timestamps are relative to the start time of the full trace.
           </small>
         </div>

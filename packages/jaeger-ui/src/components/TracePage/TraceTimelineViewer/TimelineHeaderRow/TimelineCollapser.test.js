@@ -27,6 +27,6 @@ describe('<TimelineCollapser>', () => {
     };
     const wrapper = shallow(<TimelineCollapser {...props} />);
     expect(wrapper).toBeDefined();
-    expect(wrapper.find('.TimelineCollapser').length).toBe(1);
+    expect(wrapper.find('[data-test-id="TimelineCollapser"]').length).toBe(1);
   });
 });
