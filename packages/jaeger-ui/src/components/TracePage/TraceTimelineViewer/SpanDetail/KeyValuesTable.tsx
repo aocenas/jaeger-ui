@@ -14,14 +14,65 @@
 
 import * as React from 'react';
 import jsonMarkup from 'json-markup';
+import { css } from 'emotion';
+import cx from 'classnames';
 
 import CopyIcon from '../../../common/CopyIcon';
 
 import { TNil } from '../../../../types';
 import { KeyValuePair, Link } from '../../../../types/trace';
 import { UIDropdown, UIIcon, UIMenu, UIMenuItem } from '../../uiElementsContext';
+import { createStyle } from '../../Theme';
 
-import './KeyValuesTable.css';
+export const getStyles = createStyle(() => {
+  const copyIcon = css`
+    label: copyIcon;
+  `;
+  return {
+    KeyValueTable: css`
+      label: KeyValueTable;
+      background: #fff;
+      border: 1px solid #ddd;
+      margin-bottom: 0.7em;
+      max-height: 450px;
+      overflow: auto;
+    `,
+    body: css`
+      label: body;
+      vertical-align: baseline;
+    `,
+    row: css`
+      label: row;
+      & > td {
+        padding: 0.25rem 0.5rem;
+        padding: 0.25rem 0.5rem;
+        vertical-align: top;
+      }
+      &:nth-child(2n) > td {
+        background: #f5f5f5;
+      }
+      &:not(:hover) .${copyIcon} {
+        display: none;
+      }
+    `,
+    keyColumn: css`
+      label: keyColumn;
+      color: #888;
+      white-space: pre;
+      width: 125px;
+    `,
+    copyColumn: css`
+      label: copyColumn;
+      text-align: right;
+    `,
+    linkIcon: css`
+      label: linkIcon;
+      vertical-align: middle;
+      font-weight: bold;
+    `,
+    copyIcon,
+  };
+});
 
 const jsonObjectOrArrayStartRegex = /^(\[|\{)/;
 
@@ -37,11 +88,14 @@ function parseIfComplexJson(value: any) {
   return value;
 }
 
-export const LinkValue = (props: { href: string; title?: string; children: React.ReactNode }) => (
-  <a href={props.href} title={props.title} target="_blank" rel="noopener noreferrer">
-    {props.children} <UIIcon className="KeyValueTable--linkIcon" type="export" />
-  </a>
-);
+export const LinkValue = (props: { href: string; title?: string; children: React.ReactNode }) => {
+  const styles = getStyles();
+  return (
+    <a href={props.href} title={props.title} target="_blank" rel="noopener noreferrer">
+      {props.children} <UIIcon className={styles.linkIcon} type="export" />
+    </a>
+  );
+};
 
 LinkValue.defaultProps = {
   title: '',
@@ -66,10 +120,11 @@ type KeyValuesTableProps = {
 
 export default function KeyValuesTable(props: KeyValuesTableProps) {
   const { data, linksGetter } = props;
+  const styles = getStyles();
   return (
-    <div className="KeyValueTable u-simple-scrollbars">
+    <div className={cx(styles.KeyValueTable, 'u-simple-scrollbars')} data-test-id="KeyValueTable">
       <table className="u-width-100">
-        <tbody className="KeyValueTable--body">
+        <tbody className={styles.body}>
           {data.map((row, i) => {
             const markup = {
               __html: jsonMarkup(parseIfComplexJson(row.value)),
@@ -91,7 +146,7 @@ export default function KeyValuesTable(props: KeyValuesTableProps) {
                 <div>
                   <UIDropdown overlay={linkValueList(links)} placement="bottomRight" trigger={['click']}>
                     <a>
-                      {jsonTable} <UIIcon className="KeyValueTable--linkIcon" type="profile" />
+                      {jsonTable} <UIIcon className={styles.linkIcon} type="profile" />
                     </a>
                   </UIDropdown>
                 </div>
@@ -102,12 +157,14 @@ export default function KeyValuesTable(props: KeyValuesTableProps) {
             return (
               // `i` is necessary in the key because row.key can repeat
               // eslint-disable-next-line react/no-array-index-key
-              <tr className="KeyValueTable--row" key={`${row.key}-${i}`}>
-                <td className="KeyValueTable--keyColumn">{row.key}</td>
+              <tr className={styles.row} key={`${row.key}-${i}`}>
+                <td className={styles.keyColumn} data-test-id="KeyValueTable--keyColumn">
+                  {row.key}
+                </td>
                 <td>{valueMarkup}</td>
-                <td className="KeyValueTable--copyColumn">
+                <td className={styles.copyColumn}>
                   <CopyIcon
-                    className="KeyValueTable--copyIcon"
+                    className={styles.copyIcon}
                     copyText={JSON.stringify(row, null, 2)}
                     tooltipTitle="Copy JSON"
                   />

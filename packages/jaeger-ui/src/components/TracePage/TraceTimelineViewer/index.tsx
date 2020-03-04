@@ -13,6 +13,7 @@
 // limitations under the License.
 
 import React from 'react';
+import { css } from 'emotion';
 
 import TimelineHeaderRow from './TimelineHeaderRow';
 import VirtualizedTraceView from './VirtualizedTraceView';
@@ -23,9 +24,43 @@ import { TNil } from '../../../types';
 import { Span, Trace, Log } from '../../../types/trace';
 import TTraceTimeline from '../../../types/TTraceTimeline';
 import { TExtractUiFindFromStateReturn } from '../../common/UiFindInput';
-
-import './index.css';
+import { createStyle } from '../Theme';
 import ExternalLinkContext from '../url/externalLinkContext';
+
+const getStyles = createStyle(() => {
+  return {
+    TraceTimelineViewer: css`
+      border-bottom: 1px solid #bbb;
+
+      & .json-markup {
+        line-height: 17px;
+        font-size: 13px;
+        font-family: monospace;
+        white-space: pre-wrap;
+      }
+
+      & .json-markup-key {
+        font-weight: bold;
+      }
+
+      & .json-markup-bool {
+        color: firebrick;
+      }
+
+      & .json-markup-string {
+        color: teal;
+      }
+
+      & .json-markup-null {
+        color: teal;
+      }
+
+      & .json-markup-number {
+        color: blue;
+      }
+    `,
+  };
+});
 
 type TProps = TExtractUiFindFromStateReturn & {
   registerAccessors: (accessors: Accessors) => void;
@@ -104,10 +139,11 @@ export default class TraceTimelineViewer extends React.PureComponent<TProps> {
       ...rest
     } = this.props;
     const { trace } = rest;
+    const styles = getStyles();
 
     return (
       <ExternalLinkContext.Provider value={createLinkToExternalSpan}>
-        <div className="TraceTimelineViewer">
+        <div className={styles.TraceTimelineViewer}>
           <TimelineHeaderRow
             duration={trace.duration}
             nameColumnWidth={traceTimeline.spanNameColumnWidth}

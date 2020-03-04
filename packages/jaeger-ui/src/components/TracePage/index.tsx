@@ -62,9 +62,10 @@ import UIElementsContext, {
   PopoverProps,
   TooltipProps,
 } from './uiElementsContext';
+import TTraceTimeline from '../../types/TTraceTimeline';
+import { ThemeOptions, ThemeProvider } from './Theme';
 
 import './index.css';
-import TTraceTimeline from '../../types/TTraceTimeline';
 
 type TDispatchPropsTimelineViewer = {
   focusUiFindMatches: (trace: Trace, uiFind: string | TNil, allowHide?: boolean) => void;
@@ -428,54 +429,56 @@ export class TracePageImpl extends React.PureComponent<TProps, TState> {
     };
 
     return (
-      <div>
-        {archiveEnabled && (
-          <ArchiveNotifier acknowledge={this.acknowledgeArchive} archivedState={archiveTraceState} />
-        )}
-        <div className="Tracepage--headerSection" ref={this.setHeaderHeight}>
-          <TracePageHeader {...headerProps} />
-        </div>
-        {headerHeight &&
-          (traceGraphView ? (
-            <section style={{ paddingTop: headerHeight }}>
-              <TraceGraph
-                headerHeight={headerHeight}
-                ev={this.traceDagEV}
-                uiFind={uiFind}
-                uiFindVertexKeys={graphFindMatches}
-              />
-            </section>
-          ) : (
-            <section style={{ paddingTop: headerHeight }}>
-              <UIElementsContext.Provider
-                value={{
-                  Popover: Popover as React.ComponentType<PopoverProps>,
-                  Tooltip: Tooltip as React.ComponentType<TooltipProps>,
-                  Icon,
-                  Dropdown: Dropdown as React.ComponentType<DropdownProps>,
-                  Menu: Menu as React.ComponentType<MenuProps>,
-                  MenuItem: Menu.Item,
-                  Button: Button as React.ComponentType<ButtonProps>,
-                }}
-              >
-                <TraceTimelineViewer
-                  registerAccessors={this._scrollManager.setAccessors}
-                  scrollToFirstVisibleSpan={this._scrollManager.scrollToFirstVisibleSpan}
-                  findMatchesIDs={spanFindMatches}
-                  trace={data}
-                  updateNextViewRangeTime={this.updateNextViewRangeTime}
-                  updateViewRangeTime={this.updateViewRangeTime}
-                  viewRange={viewRange}
-                  focusSpan={this.focusSpan}
+      <ThemeProvider value={{} as ThemeOptions}>
+        <div>
+          {archiveEnabled && (
+            <ArchiveNotifier acknowledge={this.acknowledgeArchive} archivedState={archiveTraceState} />
+          )}
+          <div className="Tracepage--headerSection" ref={this.setHeaderHeight}>
+            <TracePageHeader {...headerProps} />
+          </div>
+          {headerHeight &&
+            (traceGraphView ? (
+              <section style={{ paddingTop: headerHeight }}>
+                <TraceGraph
+                  headerHeight={headerHeight}
+                  ev={this.traceDagEV}
                   uiFind={uiFind}
-                  traceTimeline={traceTimeline}
-                  createLinkToExternalSpan={createLinkToExternalSpan}
-                  {...rest}
+                  uiFindVertexKeys={graphFindMatches}
                 />
-              </UIElementsContext.Provider>
-            </section>
-          ))}
-      </div>
+              </section>
+            ) : (
+              <section style={{ paddingTop: headerHeight }}>
+                <UIElementsContext.Provider
+                  value={{
+                    Popover: Popover as React.ComponentType<PopoverProps>,
+                    Tooltip: Tooltip as React.ComponentType<TooltipProps>,
+                    Icon,
+                    Dropdown: Dropdown as React.ComponentType<DropdownProps>,
+                    Menu: Menu as React.ComponentType<MenuProps>,
+                    MenuItem: Menu.Item,
+                    Button: Button as React.ComponentType<ButtonProps>,
+                  }}
+                >
+                  <TraceTimelineViewer
+                    registerAccessors={this._scrollManager.setAccessors}
+                    scrollToFirstVisibleSpan={this._scrollManager.scrollToFirstVisibleSpan}
+                    findMatchesIDs={spanFindMatches}
+                    trace={data}
+                    updateNextViewRangeTime={this.updateNextViewRangeTime}
+                    updateViewRangeTime={this.updateViewRangeTime}
+                    viewRange={viewRange}
+                    focusSpan={this.focusSpan}
+                    uiFind={uiFind}
+                    traceTimeline={traceTimeline}
+                    createLinkToExternalSpan={createLinkToExternalSpan}
+                    {...rest}
+                  />
+                </UIElementsContext.Provider>
+              </section>
+            ))}
+        </div>
+      </ThemeProvider>
     );
   }
 }

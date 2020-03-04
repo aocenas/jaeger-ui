@@ -13,15 +13,57 @@
 // limitations under the License.
 
 import React from 'react';
+import { css } from 'emotion';
 
 import SpanDetail from './SpanDetail';
 import DetailState from './SpanDetail/DetailState';
 import SpanTreeOffset from './SpanTreeOffset';
 import TimelineRow from './TimelineRow';
+import { createStyle } from '../Theme';
 
 import { Log, Span, KeyValuePair, Link } from '../../../types/trace';
 
-import './SpanDetailRow.css';
+const getStyles = createStyle(() => {
+  return {
+    expandedAccent: css`
+      cursor: pointer;
+      height: 100%;
+      overflow: hidden;
+      position: absolute;
+      width: 100%;
+      &::before {
+        border-left: 4px solid;
+        pointer-events: none;
+        width: 1000px;
+      }
+      &::after {
+        border-right: 1000px solid;
+        border-color: inherit;
+        cursor: pointer;
+        opacity: 0.2;
+      }
+
+      /* border-color inherit must come AFTER other border declarations for accent */
+      &::before,
+      &::after {
+        border-color: inherit;
+        content: ' ';
+        position: absolute;
+        height: 100%;
+      }
+
+      &:hover::after {
+        opacity: 0.35;
+      }
+    `,
+    infoWrapper: css`
+      background: #f5f5f5;
+      border: 1px solid #d3d3d3;
+      border-top: 3px solid;
+      padding: 0.75rem;
+    `,
+  };
+});
 
 type SpanDetailRowProps = {
   color: string;
@@ -71,8 +113,9 @@ export default class SpanDetailRow extends React.PureComponent<SpanDetailRowProp
       addHoverIndentGuideId,
       removeHoverIndentGuideId,
     } = this.props;
+    const styles = getStyles();
     return (
-      <TimelineRow className="detail-row">
+      <TimelineRow>
         <TimelineRow.Cell width={columnDivision}>
           <SpanTreeOffset
             span={span}
@@ -83,16 +126,17 @@ export default class SpanDetailRow extends React.PureComponent<SpanDetailRowProp
           />
           <span>
             <span
-              className="detail-row-expanded-accent"
+              className={styles.expandedAccent}
               aria-checked="true"
               onClick={this._detailToggle}
               role="switch"
               style={{ borderColor: color }}
+              data-test-id="detail-row-expanded-accent"
             />
           </span>
         </TimelineRow.Cell>
         <TimelineRow.Cell width={1 - columnDivision}>
-          <div className="detail-info-wrapper" style={{ borderTopColor: color }}>
+          <div className={styles.infoWrapper} style={{ borderTopColor: color }}>
             <SpanDetail
               detailState={detailState}
               linksGetter={this._linksGetter}

@@ -41,7 +41,7 @@ describe('<AccordianText>', () => {
   });
 
   it('renders the label', () => {
-    const header = wrapper.find(`.AccordianText--header > strong`);
+    const header = wrapper.find(`[data-test-id="AccordianText--header"] > strong`);
     expect(header.length).toBe(1);
     expect(header.text()).toBe(props.label);
   });

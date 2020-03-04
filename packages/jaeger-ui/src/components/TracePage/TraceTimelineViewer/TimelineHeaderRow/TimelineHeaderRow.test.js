@@ -47,7 +47,7 @@ describe('<TimelineHeaderRow>', () => {
 
   it('renders without exploding', () => {
     expect(wrapper).toBeDefined();
-    expect(wrapper.find('.TimelineHeaderRow').length).toBe(1);
+    expect(wrapper.find('[data-test-id="TimelineHeaderRow"]').length).toBe(1);
   });
 
   it('propagates the name column width', () => {

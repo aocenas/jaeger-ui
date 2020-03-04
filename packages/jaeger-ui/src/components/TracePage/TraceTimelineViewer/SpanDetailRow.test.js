@@ -58,18 +58,13 @@ describe('<SpanDetailRow>', () => {
   it('escalates toggle detail', () => {
     const calls = props.onDetailToggled.mock.calls;
     expect(calls.length).toBe(0);
-    wrapper.find('.detail-row-expanded-accent').prop('onClick')();
+    wrapper.find('[data-test-id="detail-row-expanded-accent"]').prop('onClick')();
     expect(calls).toEqual([[spanID]]);
   });
 
   it('renders the span tree offset', () => {
     const spanTreeOffset = <SpanTreeOffset span={props.span} showChildrenIcon={false} />;
     expect(wrapper.contains(spanTreeOffset)).toBe(true);
-  });
-
-  it('renders the "expanded accent"', () => {
-    const elm = <span className="detail-row-expanded-accent" style={{ borderColor: props.color }} />;
-    expect(wrapper.containsMatchingElement(elm)).toBe(true);
   });
 
   it('renders the SpanDetail', () => {

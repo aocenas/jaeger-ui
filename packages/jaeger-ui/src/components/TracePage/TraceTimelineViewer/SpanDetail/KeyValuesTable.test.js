@@ -17,7 +17,7 @@ import { shallow } from 'enzyme';
 
 import CopyIcon from '../../../common/CopyIcon';
 
-import KeyValuesTable, { LinkValue } from './KeyValuesTable';
+import KeyValuesTable, { LinkValue, getStyles } from './KeyValuesTable';
 import { UIDropdown, UIIcon } from '../../uiElementsContext';
 
 describe('LinkValue', () => {
@@ -37,7 +37,8 @@ describe('LinkValue', () => {
   });
 
   it('renders correct Icon', () => {
-    expect(wrapper.find(UIIcon).hasClass('KeyValueTable--linkIcon')).toBe(true);
+    const styles = getStyles();
+    expect(wrapper.find(UIIcon).hasClass(styles.linkIcon)).toBe(true);
     expect(wrapper.find(UIIcon).prop('type')).toBe('export');
   });
 });
@@ -58,14 +59,14 @@ describe('<KeyValuesTable>', () => {
 
   it('renders without exploding', () => {
     expect(wrapper).toBeDefined();
-    expect(wrapper.find('.KeyValueTable').length).toBe(1);
+    expect(wrapper.find('[data-test-id="KeyValueTable"]').length).toBe(1);
   });
 
   it('renders a table row for each data element', () => {
     const trs = wrapper.find('tr');
     expect(trs.length).toBe(data.length);
     trs.forEach((tr, i) => {
-      expect(tr.find('.KeyValueTable--keyColumn').text()).toMatch(data[i].key);
+      expect(tr.find('[data-test-id="KeyValueTable--keyColumn"]').text()).toMatch(data[i].key);
     });
   });
 

@@ -13,13 +13,62 @@
 // limitations under the License.
 
 import * as React from 'react';
-import cx from 'classnames';
+import { css, cx } from 'emotion';
 
 import { TUpdateViewRangeTimeFunction, IViewRangeTime, ViewRangeTimeUpdate } from '../../types';
 import { TNil } from '../../../../types';
 import DraggableManager, { DraggableBounds, DraggingUpdate } from '../../../../utils/DraggableManager';
+import { createStyle } from '../../Theme';
 
-import './TimelineViewingLayer.css';
+// exported for testing
+export const getStyles = createStyle(() => {
+  return {
+    TimelineViewingLayer: css`
+      bottom: 0;
+      cursor: vertical-text;
+      left: 0;
+      position: absolute;
+      right: 0;
+      top: 0;
+    `,
+    cursorGuide: css`
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      width: 1px;
+      background-color: red;
+    `,
+    dragged: css`
+      position: absolute;
+      top: 0;
+      bottom: 0;
+    `,
+    draggedDraggingLeft: css`
+      border-left: 1px solid;
+    `,
+    draggedDraggingRight: css`
+      border-right: 1px solid;
+    `,
+    draggedShiftDrag: css`
+      background-color: rgba(68, 68, 255, 0.2);
+      border-color: #44f;
+    `,
+    draggedReframeDrag: css`
+      background-color: rgba(255, 68, 68, 0.2);
+      border-color: #f44;
+    `,
+    fullOverlay: css`
+      bottom: 0;
+      cursor: col-resize;
+      left: 0;
+      position: fixed;
+      right: 0;
+      top: 0;
+      user-select: none;
+    `,
+  };
+});
 
 type TimelineViewingLayerProps = {
   /**
@@ -106,13 +155,19 @@ function getMarkers(
     return null;
   }
   const { isDraggingLeft, left, width } = layout;
+  const styles = getStyles();
   const cls = cx({
-    isDraggingLeft,
-    isDraggingRight: !isDraggingLeft,
-    isReframeDrag: !isShift,
-    isShiftDrag: isShift,
+    [styles.draggedDraggingRight]: !isDraggingLeft,
+    [styles.draggedReframeDrag]: !isShift,
+    [styles.draggedShiftDrag]: isShift,
   });
-  return <div className={`TimelineViewingLayer--dragged ${cls}`} style={{ left, width }} />;
+  return (
+    <div
+      className={cx(styles.dragged, styles.draggedDraggingLeft, cls)}
+      style={{ left, width }}
+      data-test-id="Dragged"
+    />
+  );
 }
 
 /**
@@ -198,17 +253,23 @@ export default class TimelineViewingLayer extends React.PureComponent<TimelineVi
     if (!haveNextTimeRange && cursor != null && cursor >= viewStart && cursor <= viewEnd) {
       cusrorPosition = `${mapToViewSubRange(viewStart, viewEnd, cursor) * 100}%`;
     }
+    const styles = getStyles();
     return (
       <div
         aria-hidden
-        className="TimelineViewingLayer"
+        className={styles.TimelineViewingLayer}
         ref={this._setRoot}
         onMouseDown={this._draggerReframe.handleMouseDown}
         onMouseLeave={this._draggerReframe.handleMouseLeave}
         onMouseMove={this._draggerReframe.handleMouseMove}
+        data-test-id="TimelineViewingLayer"
       >
         {cusrorPosition != null && (
-          <div className="TimelineViewingLayer--cursorGuide" style={{ left: cusrorPosition }} />
+          <div
+            className={styles.cursorGuide}
+            style={{ left: cusrorPosition }}
+            data-test-id="TimelineViewingLayer--cursorGuide"
+          />
         )}
         {reframe != null && getMarkers(viewStart, viewEnd, reframe.anchor, reframe.shift, false)}
         {shiftEnd != null && getMarkers(viewStart, viewEnd, viewEnd, shiftEnd, true)}

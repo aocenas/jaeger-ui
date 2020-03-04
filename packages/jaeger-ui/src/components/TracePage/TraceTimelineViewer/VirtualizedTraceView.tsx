@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import * as React from 'react';
-import cx from 'classnames';
+import { css } from 'emotion';
 
 import ListView from './ListView';
 import SpanBarRow from './SpanBarRow';
@@ -35,6 +35,21 @@ import { Log, Span, Trace, KeyValuePair } from '../../../types/trace';
 import TTraceTimeline from '../../../types/TTraceTimeline';
 
 import './VirtualizedTraceView.css';
+import { createStyle } from '../Theme';
+
+const getStyles = createStyle(() => {
+  return {
+    spans: css`
+      padding-top: 38px;
+    `,
+    rowsWrapper: css`
+      width: 100%;
+    `,
+    row: css`
+      width: 100%;
+    `,
+  };
+});
 
 type RowState = {
   isDetail: boolean;
@@ -123,17 +138,17 @@ function generateRowStates(
   return rowStates;
 }
 
-function getCssClasses(currentViewRange: [number, number]) {
+function getClipping(currentViewRange: [number, number]) {
   const [zoomStart, zoomEnd] = currentViewRange;
-  return cx({
-    'clipping-left': zoomStart > 0,
-    'clipping-right': zoomEnd < 1,
-  });
+  return {
+    left: zoomStart > 0,
+    right: zoomEnd < 1,
+  };
 }
 
 // export from tests
 export default class VirtualizedTraceView extends React.Component<VirtualizedTraceViewProps> {
-  clippingCssClasses: string;
+  clipping: { left: boolean; right: boolean };
   listView: ListView | TNil;
   rowStates: RowState[];
   getViewedBounds: ViewedBoundsFunctionType;
@@ -143,7 +158,7 @@ export default class VirtualizedTraceView extends React.Component<VirtualizedTra
     // keep "prop derivations" on the instance instead of calculating in
     // `.render()` to avoid recalculating in every invocation of `.renderRow()`
     const { currentViewRangeTime, childrenHiddenIDs, detailStates, setTrace, trace, uiFind } = props;
-    this.clippingCssClasses = getCssClasses(currentViewRangeTime);
+    this.clipping = getClipping(currentViewRangeTime);
     const [zoomStart, zoomEnd] = currentViewRangeTime;
     this.getViewedBounds = createViewedBoundsFunc({
       min: trace.startTime,
@@ -190,7 +205,7 @@ export default class VirtualizedTraceView extends React.Component<VirtualizedTra
       this.rowStates = nextTrace ? generateRowStates(nextTrace.spans, nextHiddenIDs, nextDetailStates) : [];
     }
     if (currentViewRangeTime !== nextViewRangeTime) {
-      this.clippingCssClasses = getCssClasses(nextViewRangeTime);
+      this.clipping = getClipping(nextViewRangeTime);
       const [zoomStart, zoomEnd] = nextViewRangeTime;
       this.getViewedBounds = createViewedBoundsFunc({
         min: trace.startTime,
@@ -343,10 +358,12 @@ export default class VirtualizedTraceView extends React.Component<VirtualizedTra
         };
       }
     }
+    const styles = getStyles();
     return (
-      <div className="VirtualizedTraceView--row" key={key} style={style} {...attrs}>
+      <div className={styles.row} key={key} style={style} {...attrs}>
         <SpanBarRow
-          className={this.clippingCssClasses}
+          clippingLeft={this.clipping.left}
+          clippingRight={this.clipping.right}
           color={color}
           columnDivision={spanNameColumnWidth}
           isChildrenExpanded={!isCollapsed}
@@ -393,8 +410,9 @@ export default class VirtualizedTraceView extends React.Component<VirtualizedTra
       return null;
     }
     const color = colorGenerator.getColorByKey(serviceName);
+    const styles = getStyles();
     return (
-      <div className="VirtualizedTraceView--row" key={key} style={{ ...style, zIndex: 1 }} {...attrs}>
+      <div className={styles.row} key={key} style={{ ...style, zIndex: 1 }} {...attrs}>
         <SpanDetailRow
           color={color}
           columnDivision={spanNameColumnWidth}
@@ -419,8 +437,9 @@ export default class VirtualizedTraceView extends React.Component<VirtualizedTra
   }
 
   render() {
+    const styles = getStyles();
     return (
-      <div className="VirtualizedTraceView--spans">
+      <div className={styles.spans}>
         <ListView
           ref={this.setListView}
           dataLength={this.rowStates.length}
@@ -428,7 +447,7 @@ export default class VirtualizedTraceView extends React.Component<VirtualizedTra
           itemRenderer={this.renderRow}
           viewBuffer={300}
           viewBufferMin={100}
-          itemsWrapperClassName="VirtualizedTraceView--rowsWrapper"
+          itemsWrapperClassName={styles.rowsWrapper}
           getKeyFromIndex={this.getKeyFromIndex}
           getIndexFromKey={this.getIndexFromKey}
           windowScroller

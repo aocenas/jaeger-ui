@@ -13,11 +13,37 @@
 // limitations under the License.
 
 import * as React from 'react';
+import { css } from 'emotion';
+import cx from 'classnames';
 
 import { formatDuration } from './utils';
 import { TNil } from '../../../types';
+import { createStyle } from '../Theme';
 
-import './Ticks.css';
+const getStyles = createStyle(() => {
+  return {
+    Ticks: css`
+      pointer-events: none;
+    `,
+    tick: css`
+      position: absolute;
+      height: 100%;
+      width: 1px;
+      background: #d8d8d8;
+      &:last-child {
+        width: 0;
+      }
+    `,
+    tickLabel: css`
+      left: 0.25rem;
+      position: absolute;
+    `,
+    tickLabelEndAnchor: css`
+      left: initial;
+      right: 0.25rem;
+    `,
+  };
+});
 
 type TicksProps = {
   endTime?: number | TNil;
@@ -38,24 +64,27 @@ export default function Ticks(props: TicksProps) {
       labels.push(formatDuration(durationAtTick));
     }
   }
+  const styles = getStyles();
   const ticks: React.ReactNode[] = [];
   for (let i = 0; i < numTicks; i++) {
     const portion = i / (numTicks - 1);
     ticks.push(
       <div
         key={portion}
-        className="Ticks--tick"
+        className={styles.tick}
         style={{
           left: `${portion * 100}%`,
         }}
       >
         {labels && (
-          <span className={`Ticks--tickLabel ${portion >= 1 ? 'isEndAnchor' : ''}`}>{labels[i]}</span>
+          <span className={cx(styles.tickLabel, { [styles.tickLabelEndAnchor]: portion >= 1 })}>
+            {labels[i]}
+          </span>
         )}
       </div>
     );
   }
-  return <div className="Ticks">{ticks}</div>;
+  return <div className={styles.Ticks}>{ticks}</div>;
 }
 
 Ticks.defaultProps = {

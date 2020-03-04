@@ -14,6 +14,8 @@
 
 import React from 'react';
 import { Divider } from 'antd';
+import { css } from 'emotion';
+import cx from 'classnames';
 
 import AccordianKeyValues from './AccordianKeyValues';
 import AccordianLogs from './AccordianLogs';
@@ -25,9 +27,55 @@ import LabeledList from '../../../common/LabeledList';
 
 import { TNil } from '../../../../types';
 import { KeyValuePair, Link, Log, Span } from '../../../../types/trace';
-
-import './index.css';
 import AccordianReferences from './AccordianReferences';
+import { createStyle } from '../../Theme';
+
+const getStyles = createStyle(() => {
+  return {
+    divider: css`
+      background: #ddd;
+    `,
+    debugInfo: css`
+      display: block;
+      letter-spacing: 0.25px;
+      margin: 0.5em 0 -0.75em;
+      text-align: right;
+    `,
+    debugLabel: css`
+      &::before {
+        color: #bbb;
+        content: attr(data-label);
+      }
+    `,
+    debugValue: css`
+      background-color: inherit;
+      border: none;
+      color: #888;
+      cursor: pointer;
+      &:hover {
+        color: #333;
+      }
+    `,
+    AccordianWarnings: css`
+      background: #fafafa;
+      border: 1px solid #e4e4e4;
+      margin-bottom: 0.25rem;
+    `,
+    AccordianWarningsHeader: css`
+      background: #fff7e6;
+      padding: 0.25rem 0.5rem;
+      &:hover {
+        background: #ffe7ba;
+      }
+    `,
+    AccordianWarningsHeaderOpen: css`
+      border-bottom: 1px solid #e8e8e8;
+    `,
+    AccordianWarningsLabel: css`
+      color: #d36c08;
+    `,
+  };
+});
 
 type SpanDetailProps = {
   detailState: DetailState;
@@ -87,18 +135,15 @@ export default function SpanDetail(props: SpanDetailProps) {
     },
   ];
   const deepLinkCopyText = `${window.location.origin}${window.location.pathname}?uiFind=${spanID}`;
+  const styles = getStyles();
 
   return (
     <div>
       <div className="ub-flex ub-items-center">
         <h2 className="ub-flex-auto ub-m0">{operationName}</h2>
-        <LabeledList
-          className="ub-tx-right-align"
-          dividerClassName="SpanDetail--divider"
-          items={overviewItems}
-        />
+        <LabeledList className="ub-tx-right-align" dividerClassName={styles.divider} items={overviewItems} />
       </div>
-      <Divider className="SpanDetail--divider ub-my1" />
+      <Divider className={cx(styles.divider, 'ub-my1')} />
       <div>
         <div>
           <AccordianKeyValues
@@ -132,9 +177,9 @@ export default function SpanDetail(props: SpanDetailProps) {
         )}
         {warnings && warnings.length > 0 && (
           <AccordianText
-            className="AccordianWarnings"
-            headerClassName="AccordianWarnings--header"
-            label={<span className="AccordianWarnings--label">Warnings</span>}
+            className={styles.AccordianWarnings}
+            headerClassName={styles.AccordianWarningsHeader}
+            label={<span className={styles.AccordianWarningsLabel}>Warnings</span>}
             data={warnings}
             isOpen={isWarningsOpen}
             onToggle={() => warningsToggle(spanID)}
@@ -148,8 +193,8 @@ export default function SpanDetail(props: SpanDetailProps) {
             focusSpan={focusSpan}
           />
         )}
-        <small className="SpanDetail--debugInfo">
-          <span className="SpanDetail--debugLabel" data-label="SpanID:" /> {spanID}
+        <small className={styles.debugInfo}>
+          <span className={styles.debugLabel} data-label="SpanID:" /> {spanID}
           <CopyIcon
             copyText={deepLinkCopyText}
             icon="link"

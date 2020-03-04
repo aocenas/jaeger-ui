@@ -13,8 +13,32 @@
 // limitations under the License.
 
 import * as React from 'react';
+import { css } from 'emotion';
+import cx from 'classnames';
 
-import './TextList.css';
+import { createStyle } from '../../Theme';
+
+const getStyles = createStyle(() => {
+  return {
+    TextList: css`
+      max-height: 450px;
+      overflow: auto;
+    `,
+    List: css`
+      width: 100%;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    `,
+    item: css`
+      padding: 0.25rem 0.5rem;
+      vertical-align: top;
+      &:nth-child(2n) {
+        background: #f5f5f5;
+      }
+    `,
+  };
+});
 
 type TextListProps = {
   data: string[];
@@ -22,14 +46,17 @@ type TextListProps = {
 
 export default function TextList(props: TextListProps) {
   const { data } = props;
+  const styles = getStyles();
   return (
-    <div className="TextList u-simple-scrollbars">
-      <ul className="TextList--List ">
+    <div className={cx(styles.TextList, 'u-simple-scrollbars')} data-test-id="TextList">
+      <ul className={styles.List}>
         {data.map((row, i) => {
           return (
             // `i` is necessary in the key because row.key can repeat
             // eslint-disable-next-line react/no-array-index-key
-            <li key={`${i}`}>{row}</li>
+            <li className={styles.item} key={`${i}`}>
+              {row}
+            </li>
           );
         })}
       </ul>
