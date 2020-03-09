@@ -20,6 +20,7 @@
     // TODO(tiffon): Make plexus a project reference #348 is mergeds
     "packages/plexus/demo",
     "packages/plexus/src",
+    "packages/jaeger-ui-components/src",
     // easier to add `./typings` here than deal with typeRoots, paths, etc.
     "typings"
   ],
