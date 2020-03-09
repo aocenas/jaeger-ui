@@ -18,7 +18,7 @@ import IoChevronRight from 'react-icons/lib/io/chevron-right';
 import IoIosArrowDown from 'react-icons/lib/io/ios-arrow-down';
 
 import SpanTreeOffset, { getStyles } from './SpanTreeOffset';
-import spanAncestorIdsSpy from '../../../utils/span-ancestor-ids';
+import spanAncestorIdsSpy from '../utils/span-ancestor-ids';
 
 jest.mock('../../../utils/span-ancestor-ids');
 

@@ -21,7 +21,7 @@ import SpanTreeOffset from './SpanTreeOffset';
 import TimelineRow from './TimelineRow';
 import { createStyle } from '../Theme';
 
-import { Log, Span, KeyValuePair, Link } from '../../../types/trace';
+import { Log, Span, KeyValuePair, Link } from '../types/trace';
 
 const getStyles = createStyle(() => {
   return {

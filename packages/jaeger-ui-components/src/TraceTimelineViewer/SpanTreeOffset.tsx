@@ -19,8 +19,8 @@ import IoIosArrowDown from 'react-icons/lib/io/ios-arrow-down';
 import { css } from 'emotion';
 import cx from 'classnames';
 
-import { Span } from '../../../types/trace';
-import spanAncestorIds from '../../../utils/span-ancestor-ids';
+import { Span } from '../types/trace';
+import spanAncestorIds from '../utils/span-ancestor-ids';
 
 import { createStyle } from '../Theme';
 

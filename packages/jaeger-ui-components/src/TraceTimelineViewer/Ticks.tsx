@@ -17,7 +17,7 @@ import { css } from 'emotion';
 import cx from 'classnames';
 
 import { formatDuration } from './utils';
-import { TNil } from '../../../types';
+import { TNil } from '../types';
 import { createStyle } from '../Theme';
 
 const getStyles = createStyle(() => {

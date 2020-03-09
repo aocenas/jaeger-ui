@@ -27,7 +27,7 @@ import {
   ViewedBoundsFunctionType,
 } from './utils';
 import { Accessors } from '../ScrollManager';
-import { TExtractUiFindFromStateReturn } from '../../common/UiFindInput';
+import { TExtractUiFindFromStateReturn } from '../common/UiFindInput';
 import getLinks from '../../../model/link-patterns';
 import colorGenerator from '../../../utils/color-generator';
 import { TNil } from '../../../types';

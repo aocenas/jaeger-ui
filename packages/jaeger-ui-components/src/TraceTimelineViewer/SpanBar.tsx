@@ -21,8 +21,8 @@ import cx from 'classnames';
 import AccordianLogs from './SpanDetail/AccordianLogs';
 
 import { ViewedBoundsFunctionType } from './utils';
-import { TNil } from '../../../types';
-import { Span } from '../../../types/trace';
+import { TNil } from '../types';
+import { Span } from '../types/trace';
 import { UIPopover } from '../uiElementsContext';
 import { createStyle } from '../Theme';
 

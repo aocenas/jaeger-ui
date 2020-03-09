@@ -22,7 +22,7 @@ import {
   spanHasTag,
 } from './utils';
 
-import traceGenerator from '../../../demo/trace-generators';
+import traceGenerator from '../demo/trace-generators';
 
 describe('TraceTimelineViewer/utils', () => {
   describe('getViewedBounds()', () => {

@@ -27,8 +27,8 @@ import SpanTreeOffset from './SpanTreeOffset';
 import SpanBar from './SpanBar';
 import Ticks from './Ticks';
 
-import { TNil } from '../../../types';
-import { Span } from '../../../types/trace';
+import { TNil } from '../types';
+import { Span } from '../types/trace';
 import { createStyle } from '../Theme';
 
 const getStyles = createStyle(() => {
