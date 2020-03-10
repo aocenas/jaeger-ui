@@ -63,6 +63,7 @@ import UIElementsContext, {
   TooltipProps,
 } from './uiElementsContext';
 import TTraceTimeline from '../../types/TTraceTimeline';
+import getLinks from '../../model/link-patterns';
 import { ThemeOptions, ThemeProvider } from './Theme';
 
 import './index.css';
@@ -472,6 +473,7 @@ export class TracePageImpl extends React.PureComponent<TProps, TState> {
                     uiFind={uiFind}
                     traceTimeline={traceTimeline}
                     createLinkToExternalSpan={createLinkToExternalSpan}
+                    linksGetter={getLinks}
                     {...rest}
                   />
                 </UIElementsContext.Provider>

@@ -21,7 +21,7 @@ import { merge as mergeShortcuts } from '../keyboard-shortcuts';
 import { Accessors } from '../ScrollManager';
 import { TUpdateViewRangeTimeFunction, IViewRange, ViewRangeTimeUpdate } from '../types';
 import { TNil } from '../../../types';
-import { Span, Trace, Log } from '../../../types/trace';
+import { Span, Trace, Log, KeyValuePair, Link } from '../../../types/trace';
 import TTraceTimeline from '../../../types/TTraceTimeline';
 import { TExtractUiFindFromStateReturn } from '../../common/UiFindInput';
 import { createStyle } from '../Theme';
@@ -92,6 +92,7 @@ type TProps = TExtractUiFindFromStateReturn & {
   setTrace: (trace: Trace | TNil, uiFind: string | TNil) => void;
   addHoverIndentGuideId: (spanID: string) => void;
   removeHoverIndentGuideId: (spanID: string) => void;
+  linksGetter: (span: Span, items: KeyValuePair[], itemIndex: number) => Link[];
 };
 
 const NUM_TICKS = 5;
