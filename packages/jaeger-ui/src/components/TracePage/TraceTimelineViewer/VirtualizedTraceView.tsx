@@ -28,10 +28,9 @@ import {
 } from './utils';
 import { Accessors } from '../ScrollManager';
 import { TExtractUiFindFromStateReturn } from '../../common/UiFindInput';
-import getLinks from '../../../model/link-patterns';
 import colorGenerator from '../../../utils/color-generator';
 import { TNil } from '../../../types';
-import { Log, Span, Trace, KeyValuePair } from '../../../types/trace';
+import { Log, Span, Trace, KeyValuePair, Link } from '../../../types/trace';
 import TTraceTimeline from '../../../types/TTraceTimeline';
 
 import './VirtualizedTraceView.css';
@@ -64,6 +63,7 @@ type TVirtualizedTraceViewOwnProps = {
   registerAccessors: (accesors: Accessors) => void;
   trace: Trace;
   focusSpan: (uiFind: string) => void;
+  linksGetter: (span: Span, items: KeyValuePair[], itemIndex: number) => Link[];
 
   // was from redux
   childrenToggle: (spanID: string) => void;
@@ -308,8 +308,6 @@ export default class VirtualizedTraceView extends React.Component<VirtualizedTra
     return DEFAULT_HEIGHTS.detail;
   };
 
-  linksGetter = (span: Span, items: KeyValuePair[], itemIndex: number) => getLinks(span, items, itemIndex);
-
   renderRow = (key: string, style: React.CSSProperties, index: number, attrs: {}) => {
     const { isDetail, span, spanIndex } = this.rowStates[index];
     return isDetail
@@ -404,6 +402,7 @@ export default class VirtualizedTraceView extends React.Component<VirtualizedTra
       hoverIndentGuideIds,
       addHoverIndentGuideId,
       removeHoverIndentGuideId,
+      linksGetter,
     } = this.props;
     const detailState = detailStates.get(spanID);
     if (!trace || !detailState) {
@@ -418,7 +417,7 @@ export default class VirtualizedTraceView extends React.Component<VirtualizedTra
           columnDivision={spanNameColumnWidth}
           onDetailToggled={detailToggle}
           detailState={detailState}
-          linksGetter={this.linksGetter}
+          linksGetter={linksGetter}
           logItemToggle={detailLogItemToggle}
           logsToggle={detailLogsToggle}
           processToggle={detailProcessToggle}
