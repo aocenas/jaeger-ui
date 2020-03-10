@@ -18,7 +18,7 @@ import cx from 'classnames';
 import IoIosArrowDown from 'react-icons/lib/io/ios-arrow-down';
 import IoIosArrowRight from 'react-icons/lib/io/ios-arrow-right';
 import TextList from './TextList';
-import { TNil } from '../../../../types';
+import { TNil } from '../../types';
 import { getStyles as getAccordianKeyValuesStyles } from './AccordianKeyValues';
 import { createStyle } from '../../Theme';
 

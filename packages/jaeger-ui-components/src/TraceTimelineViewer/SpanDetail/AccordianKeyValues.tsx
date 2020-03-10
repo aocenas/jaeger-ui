@@ -20,8 +20,8 @@ import cx from 'classnames';
 
 import * as markers from './AccordianKeyValues.markers';
 import KeyValuesTable from './KeyValuesTable';
-import { TNil } from '../../../../types';
-import { KeyValuePair, Link } from '../../../../types/trace';
+import { TNil } from '../../types';
+import { KeyValuePair, Link } from '../../types/trace';
 import { createStyle } from '../../Theme';
 
 export const getStyles = createStyle(() => {

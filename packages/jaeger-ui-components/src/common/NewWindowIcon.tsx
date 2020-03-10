@@ -17,7 +17,6 @@ import cx from 'classnames';
 import IoAndroidOpen from 'react-icons/lib/io/android-open';
 import { css } from 'emotion';
 
-import './NewWindowIcon.css';
 import { createStyle } from '../Theme';
 
 const getStyles = createStyle(() => {

@@ -147,6 +147,21 @@ export const UIButton = function UIButton(props: ButtonProps) {
   );
 };
 
+export type DividerProps = {
+  className?: string;
+  type: 'vertical' | 'horizontal';
+};
+
+export const UIDivider = function UIDivider(props: DividerProps) {
+  return (
+    <GetElementsContext>
+      {(elements: Elements) => {
+        return <elements.Divider {...props} />;
+      }}
+    </GetElementsContext>
+  );
+};
+
 type Elements = {
   Popover: React.ComponentType<PopoverProps>;
   Tooltip: React.ComponentType<TooltipProps>;
@@ -155,6 +170,7 @@ type Elements = {
   Menu: React.ComponentType<MenuProps>;
   MenuItem: React.ComponentType<MenuItemProps>;
   Button: React.ComponentType<ButtonProps>;
+  Divider: React.ComponentType<DividerProps>;
 };
 
 /**

@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import * as React from 'react';
-import cx from 'classnames';
 import _sortBy from 'lodash/sortBy';
 import IoIosArrowDown from 'react-icons/lib/io/ios-arrow-down';
 import IoIosArrowRight from 'react-icons/lib/io/ios-arrow-right';
@@ -21,8 +20,8 @@ import { css } from 'emotion';
 
 import AccordianKeyValues from './AccordianKeyValues';
 import { formatDuration } from '../utils';
-import { TNil } from '../../../../types';
-import { Log, KeyValuePair, Link } from '../../../../types/trace';
+import { TNil } from '../../types';
+import { Log, KeyValuePair, Link } from '../../types/trace';
 import { createStyle } from '../../Theme';
 
 const getStyles = createStyle(() => {
