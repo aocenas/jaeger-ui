@@ -27,15 +27,18 @@ import {
   ViewedBoundsFunctionType,
 } from './utils';
 import { Accessors } from '../ScrollManager';
-import { TExtractUiFindFromStateReturn } from '../common/UiFindInput';
-import getLinks from '../../../model/link-patterns';
-import colorGenerator from '../../../utils/color-generator';
-import { TNil } from '../../../types';
-import { Log, Span, Trace, KeyValuePair } from '../../../types/trace';
-import TTraceTimeline from '../../../types/TTraceTimeline';
+import getLinks from '../model/link-patterns';
+import colorGenerator from '../utils/color-generator';
+import { TNil } from '../types';
+import { Log, Span, Trace, KeyValuePair } from '../types/trace';
+import TTraceTimeline from '../types/TTraceTimeline';
 
 import './VirtualizedTraceView.css';
 import { createStyle } from '../Theme';
+
+type TExtractUiFindFromStateReturn = {
+  uiFind: string | undefined;
+};
 
 const getStyles = createStyle(() => {
   return {
