@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import { Span } from '../../../types/trace';
+import { Span } from '../types/trace';
 
 export type ViewedBoundsFunctionType = (start: number, end: number) => { start: number; end: number };
 /**
@@ -117,4 +117,4 @@ export function findServerChildSpan(spans: Span[]) {
   return null;
 }
 
-export { formatDuration } from '../../../utils/date';
+export { formatDuration } from '../utils/date';

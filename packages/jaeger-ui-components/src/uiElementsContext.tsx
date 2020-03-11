@@ -149,7 +149,7 @@ export const UIButton = function UIButton(props: ButtonProps) {
 
 export type DividerProps = {
   className?: string;
-  type: 'vertical' | 'horizontal';
+  type?: 'vertical' | 'horizontal';
 };
 
 export const UIDivider = function UIDivider(props: DividerProps) {

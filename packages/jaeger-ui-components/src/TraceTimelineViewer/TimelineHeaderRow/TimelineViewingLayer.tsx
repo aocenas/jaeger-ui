@@ -15,9 +15,9 @@
 import * as React from 'react';
 import { css, cx } from 'emotion';
 
-import { TUpdateViewRangeTimeFunction, IViewRangeTime, ViewRangeTimeUpdate } from '../../types';
-import { TNil } from '../../../../types';
-import DraggableManager, { DraggableBounds, DraggingUpdate } from '../../../../utils/DraggableManager';
+import { TUpdateViewRangeTimeFunction, IViewRangeTime, ViewRangeTimeUpdate } from '../types';
+import { TNil } from '../../types';
+import DraggableManager, { DraggableBounds, DraggingUpdate } from '../../utils/DraggableManager';
 import { createStyle } from '../../Theme';
 
 // exported for testing

@@ -13,7 +13,7 @@
 // limitations under the License.
 
 import * as React from 'react';
-import { Input, Popover, Tooltip, Icon, Dropdown, Menu, Button } from 'antd';
+import { Input, Popover, Tooltip, Icon, Dropdown, Menu, Button, Divider } from 'antd';
 import { Location, History as RouterHistory } from 'history';
 import _clamp from 'lodash/clamp';
 import _get from 'lodash/get';
@@ -22,6 +22,16 @@ import _memoize from 'lodash/memoize';
 import { connect, Dispatch } from 'react-redux';
 import { match as Match, RouteComponentProps } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
+import {
+  TraceTimelineViewer,
+  UIElementsContext,
+  ButtonProps,
+  DropdownProps,
+  MenuProps,
+  PopoverProps,
+  TooltipProps,
+  DividerProps,
+} from '@jaegertracing/jaeger-ui-components';
 
 import ArchiveNotifier from './ArchiveNotifier';
 import { actions as archiveActions } from './ArchiveNotifier/duck';
@@ -39,7 +49,7 @@ import TraceGraph from './TraceGraph/TraceGraph';
 import { TEv } from './TraceGraph/types';
 import { trackSlimHeaderToggle } from './TracePageHeader/TracePageHeader.track';
 import TracePageHeader from './TracePageHeader';
-import TraceTimelineViewer from './TraceTimelineViewer';
+// import TraceTimelineViewer from './TraceTimelineViewer';
 import { actions as timelineActions } from './TraceTimelineViewer/duck';
 import { TUpdateViewRangeTimeFunction, IViewRange, ViewRangeTimeUpdate } from './types';
 import { getLocation, getUrl } from './url';
@@ -55,13 +65,13 @@ import { TraceArchive } from '../../types/archive';
 import { EmbeddedState } from '../../types/embedded';
 import filterSpans from '../../utils/filter-spans';
 import updateUiFind from '../../utils/update-ui-find';
-import UIElementsContext, {
-  ButtonProps,
-  DropdownProps,
-  MenuProps,
-  PopoverProps,
-  TooltipProps,
-} from './uiElementsContext';
+// import UIElementsContext, {
+//   ButtonProps,
+//   DropdownProps,
+//   MenuProps,
+//   PopoverProps,
+//   TooltipProps,
+// } from './uiElementsContext';
 import TTraceTimeline from '../../types/TTraceTimeline';
 import getLinks from '../../model/link-patterns';
 import { ThemeOptions, ThemeProvider } from './Theme';
@@ -459,6 +469,7 @@ export class TracePageImpl extends React.PureComponent<TProps, TState> {
                     Menu: Menu as React.ComponentType<MenuProps>,
                     MenuItem: Menu.Item,
                     Button: Button as React.ComponentType<ButtonProps>,
+                    Divider: Divider as React.ComponentType<DividerProps>,
                   }}
                 >
                   <TraceTimelineViewer

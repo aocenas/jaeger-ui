@@ -15,7 +15,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 
-import CopyIcon from '../../../common/CopyIcon';
+import CopyIcon from '../../common/CopyIcon';
 
 import KeyValuesTable, { LinkValue, getStyles } from './KeyValuesTable';
 import { UIDropdown, UIIcon } from '../../uiElementsContext';

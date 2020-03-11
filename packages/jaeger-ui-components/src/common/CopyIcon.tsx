@@ -13,12 +13,29 @@
 // limitations under the License.
 
 import * as React from 'react';
-
+import { css } from 'emotion';
 import cx from 'classnames';
 import copy from 'copy-to-clipboard';
-import { UITooltip, TooltipPlacement, UIButton } from '../uiElementsContext';
 
-import './CopyIcon.css';
+import { UITooltip, TooltipPlacement, UIButton } from '../uiElementsContext';
+import { createStyle } from '../Theme';
+
+const getStyles = createStyle(() => {
+  return {
+    CopyIcon: css`
+      background-color: transparent;
+      border: none;
+      color: inherit;
+      height: 100%;
+      overflow: hidden;
+      padding: 0px;
+      &:focus {
+        background-color: rgba(255, 255, 255, 0.25);
+        color: inherit;
+      }
+    `,
+  };
+});
 
 type PropsType = {
   className?: string;
@@ -59,6 +76,7 @@ export default class CopyIcon extends React.PureComponent<PropsType, StateType> 
   };
 
   render() {
+    const styles = getStyles();
     return (
       <UITooltip
         arrowPointAtCenter
@@ -68,7 +86,7 @@ export default class CopyIcon extends React.PureComponent<PropsType, StateType> 
         title={this.state.hasCopied ? 'Copied' : this.props.tooltipTitle}
       >
         <UIButton
-          className={cx(this.props.className, 'CopyIcon')}
+          className={cx(styles.CopyIcon, this.props.className)}
           htmlType="button"
           icon={this.props.icon}
           onClick={this.handleClick}

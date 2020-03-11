@@ -13,7 +13,6 @@
 // limitations under the License.
 
 import React from 'react';
-import { Divider } from 'antd';
 import { css } from 'emotion';
 import cx from 'classnames';
 
@@ -22,13 +21,14 @@ import AccordianLogs from './AccordianLogs';
 import AccordianText from './AccordianText';
 import DetailState from './DetailState';
 import { formatDuration } from '../utils';
-import CopyIcon from '../../../common/CopyIcon';
-import LabeledList from '../../../common/LabeledList';
+import CopyIcon from '../../common/CopyIcon';
+import LabeledList from '../../common/LabeledList';
 
-import { TNil } from '../../../../types';
-import { KeyValuePair, Link, Log, Span } from '../../../../types/trace';
+import { TNil } from '../../types';
+import { KeyValuePair, Link, Log, Span } from '../../types/trace';
 import AccordianReferences from './AccordianReferences';
 import { createStyle } from '../../Theme';
+import { UIDivider } from '../../uiElementsContext';
 
 const getStyles = createStyle(() => {
   return {
@@ -143,7 +143,7 @@ export default function SpanDetail(props: SpanDetailProps) {
         <h2 className="ub-flex-auto ub-m0">{operationName}</h2>
         <LabeledList className="ub-tx-right-align" dividerClassName={styles.divider} items={overviewItems} />
       </div>
-      <Divider className={cx(styles.divider, 'ub-my1')} />
+      <UIDivider className={cx(styles.divider, 'ub-my1')} />
       <div>
         <div>
           <AccordianKeyValues

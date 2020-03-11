@@ -14,16 +14,18 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-.VirtualizedTraceView--spans {
-  padding-top: 38px;
-  /* position: relative;
-  z-index: 1; */
+.DraggableManagerDemo {
+  margin: 5em;
 }
 
-.VirtualizedTraceView--rowsWrapper {
-  width: 100%;
+.DraggableManagerDemo--scenario {
+  margin-top: 2em;
 }
 
-.VirtualizedTraceView--row {
-  width: 100%;
+.DraggableManagerDemo--realm {
+  background: #d1f1e7;
+  border: 1px solid #888;
+  height: 100px;
+  position: relative;
+  width: 800px;
 }

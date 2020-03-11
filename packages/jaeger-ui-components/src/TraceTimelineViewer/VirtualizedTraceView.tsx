@@ -32,7 +32,6 @@ import { TNil } from '../types';
 import { Log, Span, Trace, KeyValuePair, Link } from '../types/trace';
 import TTraceTimeline from '../types/TTraceTimeline';
 
-import './VirtualizedTraceView.css';
 import { createStyle } from '../Theme';
 
 type TExtractUiFindFromStateReturn = {

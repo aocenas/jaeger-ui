@@ -53,7 +53,7 @@ TimelineRow.defaultProps = {
   className: '',
 };
 
-function TimelineRowCell(props: ITimelineRowCellProps) {
+export function TimelineRowCell(props: ITimelineRowCellProps) {
   const { children, className = '', width, style, ...rest } = props;
   const widthPercent = `${width * 100}%`;
   const mergedStyle = { ...style, flexBasis: widthPercent, maxWidth: widthPercent };

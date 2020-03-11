@@ -17,10 +17,10 @@ import jsonMarkup from 'json-markup';
 import { css } from 'emotion';
 import cx from 'classnames';
 
-import CopyIcon from '../../../common/CopyIcon';
+import CopyIcon from '../../common/CopyIcon';
 
-import { TNil } from '../../../../types';
-import { KeyValuePair, Link } from '../../../../types/trace';
+import { TNil } from '../../types';
+import { KeyValuePair, Link } from '../../types/trace';
 import { UIDropdown, UIIcon, UIMenu, UIMenuItem } from '../../uiElementsContext';
 import { createStyle } from '../../Theme';
 
